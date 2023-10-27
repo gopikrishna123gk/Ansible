@@ -115,6 +115,31 @@
      5) always :− Again a Ansible keyword , it states that below will always be executed.
      6) msg :− Displays the message.
 
+*) basically Ansible have 3 types of modules
+       1) Command Module
+       2) Shell Module
+       3) raw Module
+
+  *) Command modules
+
+      1) command module is used to execute commands on remote hosts
+      2) It allows you to run shell commands or arbitrary executables on target systems
+      3) The command module is a basic and versatile way to interact with remote systems, making it useful for various tasks.
+
+  *) Shell modules
+
+     1) the shell module is used to execute shell commands on remote hosts, similar to the command module
+     2) shell module is particularly useful when you need to run complex shell commands, scripts, or use shell features
+        like pipes, redirection, and environment variables.
+
+   *) raw modules
+
+     1) "raw" modules are a special type of module that allows you to execute arbitrary commands on remote hosts without  
+         having to write a custom module (or) script.
+     2)  Raw modules are a way to perform simple tasks without the need for specialized modules, especially when you want 
+         to run a single command (or) a short series of commands on a remote system.
+     
+
 
 
 
