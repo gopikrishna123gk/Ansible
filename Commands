@@ -1,0 +1,27 @@
+1)To check the connectivity of hosts	
+    $ ansible <group> -m ping
+  ex:- $ ansible 
+2)To reboot hosts
+   $ ansible <group> -a “/bin/reboot”
+3) To check the host system’s info
+    $ ansible<group> -m setup | less
+4) To transfer files
+  $ ansible <group> -m copy -a “src=home/ansible dest=/tmo/home”
+5) To create a new user
+   $ ansible<group> -m user -a “name=ansible password= <encrypted password>”
+6) To delete a user
+    $ ansible<group> -m user -a “name=ansible state- absent”
+7) To check if a package is installed and to update it
+    $ ansible<group> -m yum -a “name=httpd state=latest”
+8) To check if a package is installed but not to update it
+    $ ansible<group> -m yum -a “name=httpd state=present”
+9) To check if a package is of a specific version
+    $ ansible<group> -m yum -a “name=httpd-1.8  state=latest”
+10) To check if a package is not installed
+    $ ansible <group> -m yum -a “name= httpd state= absent
+11) To start a service	
+    $ ansible<group> -m service -a “name= httpd state=”started”
+12) To stop a service
+    $ ansible<group> -m service -a “name= httpd state=”stopped”
+13) To restart a service
+    $ ansible<group> -m service -a “name= httpd state=”restarted”
