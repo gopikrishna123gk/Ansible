@@ -82,6 +82,40 @@
          All playbooks should contain tasks or a list of tasks to be executed. Tasks are a list of actions one needs to perform.
          A tasks field contains the name of the task.
 
+*) Roles
+
+    1) Roles provide a framework for fully independent, or interdependent collections of variables, tasks, files, templates, 
+       and modules.
+    2) When dealing with extensive playbooks, it is easier to split the tasks into roles.
+    3) it helps in reusing the roles in the future. Roles are a collection of tasks, which can be moved from one playbook to 
+        another can be run independently but only through a playbook file.
+    4) The breaking of playbook allows you to logically break the playbook into reusable components.
+    5) Each role is basically limited to a particular functionality (or) desired output.
+    6) Roles are not playbooks. Roles are small functionality which can be independently used but have to be used within 
+       playbooks.
+    7) There is no way to directly execute a role.
+    8) Roles have no explicit setting for which host the role will apply to.
+    9) Top-level playbooks are the bridge holding the hosts from your inventory file to roles that should be applied to those
+       hosts.
+
+*) Variables
+
+  1) Variable in playbooks are very similar to using variables in any programming language.
+  2) It helps you to use and assign a value to a variable and use that anywhere in the playbook.
+  3) you can put conditions around the value of the variables and accordingly use them in the playbook.
+
+ *) keywords of variables
+
+     1) block :− Ansible syntax to execute a given block.
+     2) name :− Relevant name of the block - this is used in logging and helps in debugging that which all blocks were
+                successfully executed.
+     3) action :− The code next to action tag is the task to be executed. The action again is a Ansible keyword used in yaml.
+     4) register :− The output of the action is registered using the register keyword and Output is the variable name which
+                    holds the action output.
+     5) always :− Again a Ansible keyword , it states that below will always be executed.
+     6) msg :− Displays the message.
+
+
 
 
 
