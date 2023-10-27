@@ -1,0 +1,60 @@
+Assuming we have 3 remote nodes and 1 controller in this setup
+
+*) creating Same users across all remote and contoller node
+    $ sudo adduser [gk1]
+    $ sudo adduser [gk2]
+    $ sudo adduser [gk3]
+    $ sudo adduser [gk4]
+
+*) Creating password for all users which we added
+     $ sudo pass *****
+     $ sudo pass *****
+     $ sudo pass *****
+     $ sudo pass *****
+
+*)  Now, assign administrative access to the account here a/c means [user]
+      $ usermod -aG sudo [gk1]
+      $ usermod -aG sudo [gk2]
+      $ usermod -aG sudo [gk3]
+      $ usermod -aG sudo [gk4]
+
+ *) Setting up an SSH Key pair
+
+   Enter the following command in the Ansible control node terminal
+      $ ssh-keygen
+    here enter the location for to save keypassphrase
+     ex:- /home/ans/.ssh/id._rsa.pub
+
+ *) Configuring an Ansible Host
+
+    in your contoller node
+     $ ssh-copy-id username@remote_host
+     $ ssh-copy-id gk2@10.2.3.30
+     press enter to establish the connection
+     repeat the same step for all nodes communication
+
+
+ *) Setting up the Inventory File
+
+       $ sudo nano /etc/ansible/hosts
+     Scroll to the bottom of the file to add new hosts and sort them into categories
+          [category name]
+       server_name ansible_host=[server_ip]
+      ex:- [dev]
+         server1 ansible_host=10.2.3.30
+     then press -> Ctrl+X and then press -> Y to save the inventory file.
+
+*) to verify inventory file
+
+    $ ansible-inventory --list -y
+
+*) Testing the Connection
+
+    $ ansible all -m ping
+        [or]
+   $ ansible all -m ping -u root
+
+
+
+   
+
