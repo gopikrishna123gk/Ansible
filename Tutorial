@@ -1,0 +1,90 @@
+    *) Ansible is simple open-source IT engine which automates application deployment, infra service orchestration, 
+       cloud provisioning and many other IT tools.
+    *) Ansible is easy to deploy because it does not use any agents (or) custom security infrastructure.
+    *) it uses playbook to describe automation jobs, and playbook uses very simple language e.x-> YAML
+    *) Ansible is designed for multi-tier deployment. Ansible does not manage one system at time
+    *) Ansible is completely agentless which means Ansible works by connecting your nodes through 
+       ssh(by default)
+    *) After connecting to your nodes, Ansible pushes small programs called as “Ansible Modules”.
+    *) Ansible manages your inventory in simple text files 
+       note:- (These are the hosts file)
+    *) Ansible uses the hosts file where one can group the hosts and can control the actions on a specific
+       group in the playbooks.
+
+*) Why Configaration managment?
+
+  *) Configuration management in terms of Ansible means that it maintains configuration of the product performance
+     by keeping a record and updating detailed information 
+  *) which describes an enterprise’s hardware and software.
+
+*) How Ansible Works?
+
+   *)  Ansible can easily run and configure Unix-like systems as well as Windows systems to provide infrastructure
+       as code.[IAC]
+   *)  It functions by connecting via SSH to the clients, so it doesn’t need a special agent on the client-side, and 
+       by pushing modules to the clients.
+   *) modules are then executed locally on the client-side and the output is pushed back to the Ansible server.
+   *) it can very easily connect to clients using SSH-Keys, simplifying though the whole process. Client details, 
+      like hostnames (or) IP addresses and SSH ports.
+      note:- these files are called as a inventory file
+   *) its modularity regarding plugins, modules, inventories, and playbooks make Ansible the perfect companion to
+      orchestrate large environments.
+   *) it is very lightweight and consistent, and no constraints regarding the operating system or underlying hardware
+      are present.
+   *) It is also very secure due to its agentless capabilities and due to the use of OpenSSH security features.
+
+*) Important terms used in Ansible
+
+    1) Ansible server:-
+        The machine where Ansible is installed and from which all tasks and playbooks will be run
+    2) Module:-
+       Basically, a module is a command (or) set of similar Ansible commands meant to be executed on 
+       the client-side
+    3) Task:-
+        A task is a section that consists of a single procedure to be completed
+    4) Role:-
+        A way of organizing tasks and related files to be later called in a playbook
+    5) Fact:-
+        Information fetched from the client system from the global variables with the gather-facts operation
+    6) Inventory:-
+         File containing data about the ansible client servers. 
+    7) Play:-
+         Execution of a playbook
+    8) Handler:-
+       Task which is called only if a notifier is present
+    9) Notifier:-
+       Section attributed to a task which calls a handler if the output is changed
+   10) Tag:-
+       Name set to a task which can be used later on to issue just that specific task or group of tasks.
+
+*) Playbooks
+
+  1) Each playbook is an aggregation of one or more plays in it. Playbooks are structured using Plays. There can
+     be more than one play inside a playbook.
+  2) Ansible Playbooks are the way of sending commands to remote systems through scripts.
+  3) playbooks are used to configure complex system environments to increase flexibility by executing a script to
+     one (or) more systems.
+  4) Each ansible playbook works with an inventory file. The inventory file contains a list of servers divided into 
+     groups for better control.
+
+*) The Different YAML Tags
+
+    1) name:-
+        This tag specifies the name of the Ansible playbook. As in what this playbook will be doing. Any logical name can
+        be given to the playbook.
+    2)hosts
+        This tag specifies the lists of hosts or host group against which we want to run the task. The hosts field/tag is 
+        mandatory. It tells Ansible on which hosts to run the listed tasks. The tasks can be run on the same machine (or) on
+        a remote machine.
+    3) vars
+         Vars tag lets you define the variables which you can use in your playbook.
+    4) tasks
+         All playbooks should contain tasks or a list of tasks to be executed. Tasks are a list of actions one needs to perform.
+         A tasks field contains the name of the task.
+
+
+
+
+
+
+
