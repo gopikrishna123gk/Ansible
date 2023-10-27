@@ -1,0 +1,12 @@
+*) there are two types of machines
+
+    1) Control machine :− Machine from where we can manage other machines.
+    2) Remote machine :− Machines which are handled/controlled by control machine.
+
+*) Control Machine Requirements
+
+   1) Ansible can be run from any machine with Python 2 (versions 2.6 or 2.7) (or) Python 3
+     (versions 3.5 and higher) installed.
+       Note :− Windows does not support control machine.
+   2) By default, Ansible uses ssh to manage remote machine.
+
