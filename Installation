@@ -39,4 +39,10 @@
       $ pip install ansible
       $ ansible --version
 
+*) through pip
+
+    $ pip install ansible
+
+
+
 
