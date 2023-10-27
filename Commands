@@ -1,6 +1,9 @@
+you will run the Ad-hoc commands from ‘/usr/bin/ansible’
+Default location for host file
+  $ /etc/ansible/hosts
+
 1)To check the connectivity of hosts	
-    $ ansible <group> -m ping
-  ex:- $ ansible 
+    $ ansible <group> -m ping 
 2)To reboot hosts
    $ ansible <group> -a “/bin/reboot”
 3) To check the host system’s info
@@ -9,8 +12,10 @@
   $ ansible <group> -m copy -a “src=home/ansible dest=/tmo/home”
 5) To create a new user
    $ ansible<group> -m user -a “name=ansible password= <encrypted password>”
+  ex:-ansible <group> -m user -a "name=gk password=<******>"
 6) To delete a user
     $ ansible<group> -m user -a “name=ansible state- absent”
+ex:- ansible<group> -m user -a "name=gk state- absent"
 7) To check if a package is installed and to update it
     $ ansible<group> -m yum -a “name=httpd state=latest”
 8) To check if a package is installed but not to update it
@@ -25,3 +30,85 @@
     $ ansible<group> -m service -a “name= httpd state=”stopped”
 13) To restart a service
     $ ansible<group> -m service -a “name= httpd state=”restarted”
+
+*) Creating new directory
+   $ Ansible abc -m file -a "dest = /path/user1/new mode = 777 owner 
+*) Deleting whole directory and files
+   $ Ansible abc -m file -a "dest = /path/user1/new state = absent"
+
+*) Managing Packages
+   $ Ansible abc -m yum -a "name = demo-nginx-1 state = present"
+*) The following command check the package is not installed.
+   $ Ansible abc -m yum -a "name = demo-nginx-1 state = absent" 
+ *) The following command checks the latest version of package is installed.
+   $ Ansible abc -m yum -a "name = demo-nginx-1 state = latest" 
+
+*) Gathering Facts
+  $ Ansible all -m setup 
+
+*) Set & Check Hosts Connection
+
+  1) Set up hosts by editing the hosts' file in the Ansible directory
+       $ sudo nano /etc/ansible/hosts
+  2) To check the connection to hosts
+    Change your directory to /etc/Ansible 
+       $ cd /etc/ansible
+    Ansible’s ping module allows you to check whether Ansible is connecting to hosts 
+       $ ansible –m ping <hosts>
+ 3) To check on servers individually  
+      $ ansible -m ping server name
+    ex:-$ ansible gk1 -m ping
+ 4)To check a particular server group 
+     $ ansible -m ping servergroupname
+   ex:- $ ansible servergroupname -m ping -u gk1
+
+*) Parallelism & Shell Commands
+
+   1) To set up SSH agent
+      $ ssh-agent bash
+      $ ssh-add ~/.ssh/id_rsa
+  2)To use SSH with a password instead of keys, you can use --ask-pass (-K)
+     $ ansible gk1 -a "/sbin/reboot" -f 20
+  3)To run /usr/bin/ansible from a user account, not the root
+     $ ansible gk1 -m command -a "/usr/bin/foo" -u gk
+  4) To run commands through privilege escalation and not through user account
+     $ ansible gk1 -m command -a "/usr/bin/foo" -u gk -b --ask-become-pass
+    #If you are using password less method then use  --ask-become-pass (-K)
+    #to interactively get the  password to be  used
+    #You can become a user, other than root by using --become-user
+     $ ansible gk1 -m command -a "/usr/bin/foo" -u gk --become --become-user
+       otheruser --ask-become-pass
+
+*) File Transfer
+
+1) Transfer a file directly to many servers
+   $ ansible gk1 -m copy -a "src=/etc/hosts dest=/tmp/hosts"
+2) To change the ownership and permissions on files 
+    $ ansible webservers -m file -a "dest=/srv/foo/a.txt mode=600"
+ex:-$ ansible gk -m file -a "dest=/srv/foo/a.txt mode=600"
+    $ ansible webservers -m file -a "dest=/srv/foo/b.txt mode=600 owner=example group=example"
+ex:-$ ansible gk -m file -a "dest=/srv/foo/b.txt mode=600 owner=gk1 group=gk1"
+    #To create directories 
+    $ ansible webservers -m file -a "dest=/path/to/c mode=755 owner=example group=example state=directory"
+ex:-$ ansible gk -m file -a "dest=/path/to/c mode=755 owner=gk group=gk1 state=directory"
+   #To delete directories (recursively) and delete files
+    $ ansible webservers -m file -a "dest=/path/to/c state=absent"
+ex:- $ ansible gk -m file -a "dest=/path/to/c state=absent"
+
+
+*) Manage Packages
+
+  1) To ensure that a package is installed, but doesn’t get updated
+      $ ansible webservers -m apt -a "name=acme state=present"
+  ex:-$ ansible gk-m apt -a "name=acme state=present"
+ 2) To ensure that a package is installed to a specific version
+    $ ansible webservers -m apt -a "name=acme-1.5 state=present"
+ex:-$ ansible gk -m apt -a "name=acme-1.5 state=present"
+ 3) To ensure that a package at the latest version
+    $ ansible webservers -m apt -a "name=acme state=latest"
+ex:-$ ansible gk -m apt -a "name=acme state=latest"
+ 4) To ensure that a package is not installed
+   $ ansible webservers -m apt -a "name=acme state=absent"
+ex:-$ ansible gk -m apt -a "name=acme state=absent"
+
+
