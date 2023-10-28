@@ -111,4 +111,78 @@ ex:-$ ansible gk -m apt -a "name=acme state=latest"
    $ ansible webservers -m apt -a "name=acme state=absent"
 ex:-$ ansible gk -m apt -a "name=acme state=absent"
 
+*) Deploying From Source Control
+
+    GitRep:https://gk.123.org/repo.git
+     Destination:/src/myappansadmin
+  $ ansible gk1web -m git -a "repo=https://gk.123.org/repo.git dest=/src/myappansadmin version=HEAD"
+
+ *) Manage Services
+
+  1) To ensure a service is started on all web servers
+     $ ansible webservers -m service -a "name=httpd state=started"
+ ex:-$ ansible gkweb -m service -a "name=httpd state=started"
+  2) To restart a service on all web servers
+     $ ansible webservers -m service -a "name=httpd state=restarted"
+ ex:-$ ansible gkweb -m service -a "name=httpd state=restarted"
+  3) To ensure a service is stopped
+     $ ansible webservers -m service -a "name=httpd state=stopped"
+ ex:-$ ansible gkweb -m service -a "name=httpd state=stopped"
+
+  *) To build the directory structure for the role named rolegk.
+        $ ansible-galaxy init rolegk 
+
+  *) Playbooks
+
+     1) Run on all hosts defined
+         $ ansible-playbook <YAML>
+     ex:-$ ansible-playbook gk.yml
+    2) Run 6 hosts parallel [or] More 
+         $ ansible-playbook <YAML> -f 6
+     ex:-$ ansible-playbook gk.yml -f 6
+    3) Verbose on successful tasks
+         $ ansible-playbook <YAML> --verbose
+     ex:-$ ansible-playbook gk.yml --verbose
+    4) to Test run
+         $ ansible-playbook <YAML> -C 
+     ex:-$ ansible-playbook gk.yml -C
+    5) to Dry run
+         $ ansible-playbook <YAML> -C -D  
+     ex:-$ ansible-playbook gk.yml -C -D
+     6)  Run on single host
+         $ ansible-playbook <YAML> -l <host>  
+     ex:-$ ansible-playbook gk.yml -1 gk1
+  *) To dry-run gk1.yml playbook.
+        $ ansible-playbook -i hosts gk1.yml --check  
+  *) To run a gk1.yml playbook with password authentication for all hosts.
+        $ ansible-playbook -i hosts gk1.yml -k 
+
+*) Run Infos
+
+   1) to display a list of hosts (or) targets that will be affected by a playbook.
+      $ ansible-playbook <YAML> --list-hosts
+  ex:-$ ansible-playbook gk1.yml --list-hosts
+   2) to display a list of tasks defined within an Ansible playbook.
+      $ ansible-playbook <YAML> --list-tasks
+  ex:-$ ansible-playbook gk1.yml --list-taks
+
+ *) Debugging
+
+   1) All facts for one host
+       $ ansible <host> -m setup
+   ex:-$ ansible gk -m setup
+  2) Only ansible fact for one host
+      $ ansible <host> -m setup -a 'filter=ansible_eth*'  
+   ex:-$ ansible gk -m setup -a 'filter=ansible_eth*'
+  3) Only facter facts but for all hosts
+      $ ansible all -m setup -a 'filter=facter_*' 
+  ex:-$ ansible all -m setup -a 'filter=facter_*'
+
+*) Save facts to per-host files in /tmp/facts
+
+   $ ansible all -m setup --tree /tmp/facts
+
+
+
+
 
