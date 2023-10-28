@@ -56,17 +56,17 @@ ex:- ansible<group> -m user -a "name=gk state- absent"
     Ansible’s ping module allows you to check whether Ansible is connecting to hosts 
        $ ansible –m ping <hosts>
  3) To check on servers individually  
-      $ ansible -m ping server name
+        $ ansible -m ping server name
     ex:-$ ansible gk1 -m ping
  4)To check a particular server group 
-     $ ansible -m ping servergroupname
+        $ ansible -m ping servergroupname
    ex:- $ ansible servergroupname -m ping -u gk1
 
 *) Parallelism & Shell Commands
 
-   1) To set up SSH agent
-      $ ssh-agent bash
-      $ ssh-add ~/.ssh/id_rsa
+  1) To set up SSH agent
+     $ ssh-agent bash
+     $ ssh-add ~/.ssh/id_rsa
   2)To use SSH with a password instead of keys, you can use --ask-pass (-K)
      $ ansible gk1 -a "/sbin/reboot" -f 20
   3)To run /usr/bin/ansible from a user account, not the root
@@ -82,7 +82,7 @@ ex:- ansible<group> -m user -a "name=gk state- absent"
 *) File Transfer
 
 1) Transfer a file directly to many servers
-   $ ansible gk1 -m copy -a "src=/etc/hosts dest=/tmp/hosts"
+    $ ansible gk1 -m copy -a "src=/etc/hosts dest=/tmp/hosts"
 2) To change the ownership and permissions on files 
     $ ansible webservers -m file -a "dest=/srv/foo/a.txt mode=600"
 ex:-$ ansible gk -m file -a "dest=/srv/foo/a.txt mode=600"
@@ -92,7 +92,7 @@ ex:-$ ansible gk -m file -a "dest=/srv/foo/b.txt mode=600 owner=gk1 group=gk1"
     $ ansible webservers -m file -a "dest=/path/to/c mode=755 owner=example group=example state=directory"
 ex:-$ ansible gk -m file -a "dest=/path/to/c mode=755 owner=gk group=gk1 state=directory"
    #To delete directories (recursively) and delete files
-    $ ansible webservers -m file -a "dest=/path/to/c state=absent"
+     $ ansible webservers -m file -a "dest=/path/to/c state=absent"
 ex:- $ ansible gk -m file -a "dest=/path/to/c state=absent"
 
 
@@ -102,14 +102,14 @@ ex:- $ ansible gk -m file -a "dest=/path/to/c state=absent"
       $ ansible webservers -m apt -a "name=acme state=present"
   ex:-$ ansible gk-m apt -a "name=acme state=present"
  2) To ensure that a package is installed to a specific version
-    $ ansible webservers -m apt -a "name=acme-1.5 state=present"
-ex:-$ ansible gk -m apt -a "name=acme-1.5 state=present"
+      $ ansible webservers -m apt -a "name=acme-1.5 state=present"
+  ex:-$ ansible gk -m apt -a "name=acme-1.5 state=present"
  3) To ensure that a package at the latest version
-    $ ansible webservers -m apt -a "name=acme state=latest"
-ex:-$ ansible gk -m apt -a "name=acme state=latest"
+      $ ansible webservers -m apt -a "name=acme state=latest"
+  ex:-$ ansible gk -m apt -a "name=acme state=latest"
  4) To ensure that a package is not installed
-   $ ansible webservers -m apt -a "name=acme state=absent"
-ex:-$ ansible gk -m apt -a "name=acme state=absent"
+      $ ansible webservers -m apt -a "name=acme state=absent"
+  ex:-$ ansible gk -m apt -a "name=acme state=absent"
 
 *) Deploying From Source Control
 
