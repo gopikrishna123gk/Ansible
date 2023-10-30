@@ -1,0 +1,106 @@
+playbook starts with 3 "---" hypens
+
+Basic Ping Playbook:-
+
+---
+- name: Ping servers
+  hosts: all
+  tasks:
+    - name: Ping the servers
+      ping:
+      
+This playbook pings all the hosts in your inventory to check if they are reachable. 
+It's a simple way to test the connectivity to your servers.
+
+Installing Packages:-
+
+---
+- name: Install packages
+  hosts: web_servers
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+      become: yes
+      
+  This playbook installs Nginx on all hosts listed under the web_servers 
+  group in your inventory using the apt module.
+
+Copying Files:-
+
+---
+- name: Copy configuration files
+  hosts: db_servers
+  tasks:
+    - name: Copy database config
+      copy:
+        src: /path/to/local/db_config.ini
+        dest: /etc/db_config.ini
+      become: yes
+      
+  This playbook copies a local db_config.ini file to the /etc/ directory
+  on all hosts in the db_servers group.
+
+Creating Users:-
+
+---
+- name: Create users
+  hosts: linux_servers
+  tasks:
+    - name: Create user
+      user:
+        name: gk
+        password: "{{ 'secure_password' | password_hash('sha512') }}"
+      become: yes
+      
+  This playbook creates a user named gk with a securely hashed password
+  on all hosts in the linux_servers group.
+
+Running Custom Commands:-
+
+---
+- name: Run custom commands
+  hosts: all
+  tasks:
+    - name: Execute a shell command
+      shell: echo "Hello, Ansible!"
+      
+  This playbook runs a custom shell command on all hosts in your inventory, 
+  in this case, 'echoing' "Hello, Ansible!".
+
+Conditional Execution:-
+
+---
+- name: Conditional task
+  hosts: web_servers
+  tasks:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+      when: ansible_distribution == 'Ubuntu'
+      
+  This playbook restarts the Nginx service, but only if the host's distribution is Ubuntu,
+  demonstrating the use of the when condition.
+
+  playbook that installs Nginx and PostgreSQL:-
+
+  ---
+- name: Install Nginx and PostgreSQL
+  hosts: webservers:db_servers
+  become: yes
+  tasks:
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+      when: "'webservers' in inventory_hostname_group"
+    
+    - name: Install PostgreSQL
+      yum:
+        name: postgresql
+        state: present
+      when: "'db_servers' in inventory_hostname_group"
+
+  
