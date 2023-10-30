@@ -103,4 +103,298 @@ Conditional Execution:-
         state: present
       when: "'db_servers' in inventory_hostname_group"
 
-  
+playbook for dry run the all hosts:-
+
+---
+- name: Dry Run Playbook
+  hosts: all
+  tasks:
+    - name: Ensure a file exists
+      stat:
+        path: /path/to/your/file
+      register: file_info
+      ignore_errors: yes
+
+    - name: Print the result of the dry run
+      debug:
+        var: file_info
+
+ replace with your specific file locations to path
+
+ automate Jenkins pipelines through Ansible playbooks:-
+
+
+Prerequisites:
+
+  *) Jenkins:- Jenkins installed and running.
+  *) Ansible:-  Ansible installed on your local machine (or) a control node.
+  *) Jenkins Plugins:- You may need to install specific Jenkins plugins for Ansible integration.
+                       The "Jenkins Job DSL" and "Ansible" plugins can be essential.
+
+
+  *) create a Jenkins Pipeline script (Jenkinsfile) can be created in your project's source code
+    repository
+
+  pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'echo "Building..."'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'echo "Testing..."'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'echo "Deploying..."'
+            }
+        }
+    }
+}
+
+  *) create a Ansible playbook (jenkins_pipeline.yml) that uses the Jenkins Job
+
+---
+- name: Create or Update Jenkins Pipeline
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create or Update Jenkins Job DSL job
+      jenkins_job_dsl:
+        job: 'my-pipeline-job'
+        state: present
+        description: 'My Jenkins Pipeline'
+        script: |
+          pipelineJob('automate') {
+              definition {
+                  cps {
+                      sandbox()
+                      script('''
+                          pipeline {
+                              agent any
+                              stages {
+                                  stage('Build') {
+                                      steps {
+                                          sh 'echo "Building..."'
+                                      }
+                                  }
+                                  stage('Test') {
+                                      steps {
+                                          sh 'echo "Testing..."'
+                                      }
+                                  }
+                                  stage('Deploy') {
+                                      steps {
+                                          sh 'echo "Deploying..."'
+                                      }
+                                  }
+                              }
+                          }
+                      ''')
+                  }
+              }
+          }
+
+  *) Execute the Ansible playbook 
+      $ ansible-playbook jenkins_pipeline.yml
+
+
+Mange docker container:-
+
+  Prerequisites:-
+
+    Ansible:- Ensure you have Ansible installed on your control node.
+    Docker:- Make sure you have Docker installed on the target host(s) where you want
+             to manage containers.
+    SSH Access:- Ensure that you can SSH into the target host(s) from your control node.
+
+       Create an Ansible inventory file (e.g., docker_inventory.ini)
+        [docker_hosts]
+      docker_host ansible_host="your_docker_host_ip" ansible_user=your_ssh_user
+  ex:-docker_host ansible_host="your_docker_gk_10.2.0.9" ansible_user=gk1
+
+*) Create a playbook (e.g., docker_container_mgmt.yml) to manage Docker containers.
+
+    ---
+- name: Manage Docker Containers
+  hosts: docker_hosts
+  tasks:
+    - name: Pull the NGINX Docker image
+      docker_image:
+        name: nginx:latest
+        source: pull
+
+    - name: Start NGINX container
+      docker_container:
+        name: my_nginx_container
+        image: nginx:latest
+        state: started
+        ports:
+          - "80:80"
+
+
+  run the playbook
+   $ ansible-playbook -i docker_inventory.ini docker_container_mgmt.yml
+
+  Managing Namespaces:-
+
+*) create a playbook (e.g ,docker_namespace.yml)
+
+---
+- name: Manage Container with Network Namespace
+  hosts: localhost
+  tasks:
+    - name: Create a container with a separate network namespace
+      community.general.docker_container:
+        name: my_container
+        image: ubuntu:latest
+        state: started
+        command: sleep infinity
+        detach: true
+        volumes:
+          - /sys:/sys:ro
+        namespaces:
+          - net
+
+*) run playbook
+   $ ansible-playbook docker_namespace.yml
+
+
+Managing Volumes:-
+
+ *) create a playbook (e.g , docker_volumes.yml)
+
+---
+- name: Manage Docker Volumes
+  hosts: localhost
+  tasks:
+    - name: Create a named volume
+      community.general.docker_volume:
+        name: my_volume
+        state: present
+
+    - name: Create a container with a named volume
+      community.general.docker_container:
+        name: my_container
+        image: ubuntu:latest
+        state: started
+        command: sleep infinity
+        detach: true
+        volumes:
+          - my_volume:/app
+
+ *) run a playbook
+  $ ansible-playbook docker_volume.yml
+
+Inspecting docker container:-
+
+ *) create an inventory file (e.g., docker_inventory_inspect.ini)
+           [docker_host]
+         docker_host ansible_host=your_docker_host_ip ansible_user=your_ssh_user
+   ex:-  docker_host ansible_host=gk1_docker_host_10.1.2.5 ansible_user=gk
+ *) Create an Ansible playbook (e.g., inspecting_docker_container.yml)
+
+---
+- name: Inspect Docker Container
+  hosts: docker_host
+  tasks:
+    - name: Get Docker container information
+      community.general.docker_container_info:
+        name: your_container_name_or_id
+      register: container_info
+
+    - name: Display Docker container information
+      debug:
+        var: container_info
+
+   run this playbook
+  $ ansible-playbook -i docker_inventory.ini inspecting_docker_container.yml
+
+*) prune a container:-
+
+   it will remove all stopped containers
+
+   Create an Ansible playbook (e.g., prune_docker_containers.yml)
+
+---
+- name: Prune Docker Containers
+  hosts: docker_host
+  tasks:
+    - name: Prune stopped containers
+      community.general.docker_container_prune:
+        stopped: yes
+        networks: no
+        labels: no
+        containers: no
+        volumes: no
+        images: no
+        force: yes
+      register: prune_result
+
+    - name: Display the result of the prune operation
+      debug:
+        var: prune_result
+
+   run this playbook
+   $ ansible-playbook -i docker_inventory.ini prune_docker_containers.yml
+
+Automate a Kubernetes Cluster:-
+
+*) Create an Ansible Inventory:
+Create a inventory file (e.g., kubernetes_inventory.ini) 
+[kubernetes_nodes]
+node1 ansible_host=your_node1_ip ansible_user=your_ssh_user
+node2 ansible_host=your_node2_ip ansible_user=your_ssh_user
+in above ex i'm taking 2 worker nodes as per my requimenent
+
+ *) Create Ansible playbooks (e.g., k8s_deploy_nginxapp.yml)
+---
+- name: Deploy Nginx in Kubernetes
+  hosts: k8s_nodes
+  tasks:
+    - name: Deploy Nginx using kubectl
+      command: kubectl apply -f /path/to/gk/nginx-deployment.yaml
+   in this playbook /path/to/gk/nginx-deployment.yml contains the 
+   manifest file for nginx deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+  *) run this playbook
+   $ ansible-playbook -i k8s_inventory.ini deploy_nginx.yml
+   $ kubectl get pods
+  t0 get info: about running pods
+
+
+
+
+
+
+
+
+
+
+
+
+
