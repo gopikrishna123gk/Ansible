@@ -1,0 +1,126 @@
+1) What is Configuration Management?
+
+   to systematically manage, maintain, and control the configuration of software,
+   hardware, and infrastructure in a consistent and efficient manner it includes
+      *) Consistent
+      *) Documented
+      *) Traceable
+      *) Repeatable
+      *) Compliant
+   
+2) How does Ansible work?
+
+   Ansible is a combination of multiple pieces working together to become an automation tool. 
+   Mainly these are modules, playbooks, and plugins.
+   1) Modules:- these are small codes that will get executed. There are multiple inbuilt modules that 
+                serve as a starting point for building tasks.
+   2) Playbooks:- itcontain plays which further is a group of tasks. This is the place to define
+                  the workflow or the steps needed to complete a process
+   3) Plugins:- these are special kinds of modules that run on the main control machine for logging purposes.
+                There are other types of plugins also.
+
+3) features of Ansible?
+
+   It has the following features:-
+   *) Agentless :– Unlike puppet (or) chef there is no software (or) agent managing the nodes.
+   *) Python :– Built on top of python which is very easy to learn and write scripts and one of the robust 
+                programming languages.
+   *) SSH :– Passwordless network authentication which makes it more secure and easy to set up.
+   *) Push architecture :– The core concept is to push multiple small codes to the configure and run the action
+                           on client nodes.
+   *) Setup :– This is very easy to set up with a very low learning curve and any open source so that anyone 
+               can get hands-on.
+   *) Manage Inventory :– Machines’ addresses are stored in a simple text format and we can add different sources 
+                          of truth to pull the list using plugins.
+
+4) Explain Infrastructure as Code?
+
+  *) it involves managing and provisioning infrastructure (e.g., servers, networks, storage, and other components)
+     using code and automation. Instead of manually configuring and provisioning infrastructure.
+  *) IaC allows you to define and maintain your infrastructure as code in a version-controlled format.
+
+
+5) Explain Ansible galaxy?
+
+   *) it is a web-based platform and community hub for sharing, finding, and collaborating on Ansible content.
+   *) it provides a central repository and a set of tools to help Ansible users discover, reuse, and collaborate on
+      these content resources.
+
+6) Explain modules in Ansible?
+
+    *) They are the building blocks of Ansible automation, allowing you to execute various operations, from system 
+       configuration and package management to file manipulation and cloud resource provisioning.
+    *) it simplify's the automation process by providing a consistent interface to manage different systems and services
+    *) Ansible modules are a fundamental component of Ansible automation, enabling you to perform a wide range of tasks
+       across your infrastructure efficiently and consistently.
+
+7)  What are Ansible tasks?
+
+    *) Ansible tasks are the individual units of work within an Ansible playbook. Each task defines a specific action
+       (or) operation that Ansible should perform on the target system(s) when the playbook is executed.
+    *) Tasks are executed in order, and they encapsulate the work required to achieve the desired state of the system,
+       often using Ansible modules.
+
+8) Ansible Playbooks vs Roles?
+
+  *) Roles:-	
+   1) Roles are reusable subsets of a play.	.
+   2) A set of tasks for accomplishing a certain role.	
+       Example:- webservers, group of servers	
+
+*) Playbooks:-
+   1) Playbooks contain Plays
+   2) Mapps among hosts and roles.
+      Example: site.yml, gkservers.yml, webservers.yml.
+
+9)  advantages of using Ansible?
+
+    The main advantages of using this tool are
+      1) Agentless
+      2) Very low overhead
+      3) Good performance.
+
+10) can we create reusable content with Ansible?
+
+    Yes, Ansible has the concept of roles that helps to create reusable content
+       here  role directory structure:-
+
+my_roles/
+├── defaults/
+│   └── main.yml
+├── files/
+├── handlers/
+│   └── main.yml
+├── meta/
+│   └── main.yml
+├── tasks/
+│   └── main.yml
+├── templates/
+├── tests/
+├── vars/
+│   └── main.yml
+└── README.md
+
+11) How to create a empty file in Ansible?
+
+   *) To create an empty file, Ansible uses a file module.
+   *) first we need to create a playbook with the name of this is_empty_file.yml
+---
+- name: this is an empty file
+  hosts: dev_target_host
+  tasks:
+    - name: this is an empty file
+      file:
+        path: /path/to/dev/empty_file.txt
+        state: touch
+  *) run the playbook 
+     $ ansible-playbook -i inventory.ini this is_empty_file.yml
+
+
+
+
+
+
+
+
+
