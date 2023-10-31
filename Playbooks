@@ -386,6 +386,75 @@ spec:
    $ kubectl get pods
   t0 get info: about running pods
 
+Targeting Kubernetes nodes using Ansible:-
+
+  before jump into this you will get ip's of nodes using
+    $ kubectl get nodes -o wide
+
+  *) Set Up Inventory
+
+     create a file named inventory_worker_nodes.ini
+         [kubernetes-nodes]
+      node-1 ansible_host=192.168.1.100
+      node-2 ansible_host=192.168.1.101
+      node-3 ansible_host=192.168.1.102
+
+ *)  make sure SSH connection for passwordless authentication
+    ansible typically uses ssh connections
+ *) create file named worker_nodes-playbook.yaml
+ ---
+- name: Update Kubernetes worker Nodes
+  hosts: kubernetes-nodes
+  become: yes
+
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Update all packages
+      apt:
+        upgrade: dist
+      when: ansible_os_family == "Debian"
+
+    - name: Update all packages
+      yum:
+        name: 'worker'
+        state: latest
+      when: ansible_os_family == "Ubuntu"
+
+  *) run the playbook
+     $ ansible-playbook -i inventory_worker_nodes.ini worker_nodes-playbook.yaml
+
+deploy a WAR file into a Tomcat server:-
+
+ *) create a playbook named tomact_war-playbook.yaml
+
+---
+- name: Deploy WAR File to Tomcat
+  hosts: dev-tomcat-server
+  become: yes  # sudo cp /path/to/your/file /path/to/tomcat/webapps/
+
+  tasks:
+    - name: Copy WAR file to Tomcat webapps directory
+      copy:
+        src: /path/to/your/application.war
+        dest: /path/to/tomcat/webapps/
+      notify: Restart Tomcat
+
+  handlers:
+    - name: Restart Tomcat
+      service:
+        name: tomcat
+        state: restarted
+
+ *) run the playbook
+   $ ansible-playbook -i inventory.ini tomcat_war.yml
+
+
+
+
 
 
 
