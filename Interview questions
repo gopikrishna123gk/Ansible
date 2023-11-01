@@ -116,6 +116,18 @@ my_roles/
   *) run the playbook 
      $ ansible-playbook -i inventory.ini this is_empty_file.yml
 
+ 12) How will you set the environment variable or any path for a task or entire playbook?
+
+   *)  using environment variables in Ansible provides a way to make your playbooks more flexible,
+       customizable, and secure. 
+   *) It allows you to separate configuration data from the playbook code, 
+      making it easier to manage and maintain your automation tasks.
+
+ 13) Can we manage Windows Nano Server using Ansible?
+
+     No, it is not possible to manage Windows Nano Server using Ansible as it doesn't have full access  
+     to the .Net framework, which is primarily used by internal components and modules
+
 
 
 
