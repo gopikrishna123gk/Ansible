@@ -128,6 +128,64 @@ my_roles/
      No, it is not possible to manage Windows Nano Server using Ansible as it doesn't have full access  
      to the .Net framework, which is primarily used by internal components and modules
 
+ 14)  How do you access Shell Environment Variables?
+
+   *) If you are just looking to access the existing variables then you can use the 
+     -“env” lookup plugin.
+     For example:-
+       Accessing the value of Home environment variable on the management machine:
+           $ local_home:”{{lookup(‘env’,’HOME’)}}”
+
+ 15) Is it possible to increase the Ansible reboot module to more than 600 seconds?
+
+    Yes, it is possible to increase the Ansible reboot module to specific values using the
+    below syntax
+     - name: Reboot a Linux system 
+       reboot:
+       reboot_timeout: 1000
+
+     ex playbook:-
+
+- name: Reboot the system
+  command: "reboot"
+  async: 1
+  poll: 0
+  ignore_errors: yes
+
+- name: Wait for the system to come back online
+  wait_for_connection:
+    timeout: 1800  # Adjust the timeout to your desired value (in seconds)
+                     ex:- 600
+  delegate_to: localhost
+
+  16)  How can you use docker modules in Ansible?
+
+      *) Docker modules require docker-py installed on the host running Ansible. 
+           $ pip install 'docker-py>=1.7.0'
+      *) The docker_service module also requires docker-compose
+           $ pip install 'docker-compose>=1.7.0'
+
+  17)  Explain how you will copy files recursively onto a target host?
+
+     *)  you can use the copy module along with the # with_filetree lookup plugin
+     *) If you have to copy files for a large number of files, then the synchronizing module
+        is the best choice for it.
+           - synchronize:
+         src: /first/absolute/path
+         dest: /second/absolute/path
+         delegate_to: "{{ inventory_hostname }}"
+    *)Create an Ansible playbook (e.g., copy_files.yml) t
+---
+- name: Copy files recursively to target host
+  hosts: your_target_host
+  tasks:
+    - name: Copy files recursively
+      copy:
+        src: /path/to/local/source
+        dest: /path/to/remote/destination
+      with_filetree: /path/to/local/source
+
+
 
 
 
