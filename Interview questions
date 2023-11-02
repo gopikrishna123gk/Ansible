@@ -184,6 +184,9 @@ my_roles/
         src: /path/to/local/source
         dest: /path/to/remote/destination
       with_filetree: /path/to/local/source
+ *) run the playbook
+   $ ansible-playbook -i inventory.ini copy_files.yml
+
 
 
 
