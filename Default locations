@@ -1,0 +1,76 @@
+1) Playbooks and Roles:-
+
+  *) Playbooks are usually located in your project directory. There is no specific
+     default location for playbooks.
+  *) roles is located into within the "roles/" directory 
+
+ 2) Inventory:-
+
+   *) The default inventory file is /etc/ansible/hosts
+
+ 3) Configuration Files:-
+
+    *) The default configuration file is named ansible.cfg. Ansible searches for it in the 
+       following locations (in order):
+        ./ansible.cfg (local directory)          ex:- ./ansible.cfg gk
+       ~/.ansible.cfg (user's home directory)    ex:- ~/.ansible.cfg playbooks
+       /etc/ansible/ansible.cfg (system-wide)    ex:- /etc/ansible/ansible.cfg (system-wide)
+                                                        remote_user = ansible_user
+ 4) Roles Path:-
+
+    *) By default, Ansible searches for roles in the "roles/" directory relative to the playbook location.
+    *) You can set the "roles_path" in your ansible.cfg to specify a different default location for roles.
+
+ 5) Module Library:-
+
+   *) Ansible looks for modules in the default module library path, which is "/usr/share/ansible"/ (or)
+      "/usr/share/ansible/ansible/" depending on the distribution.
+   *) You can specify an alternative module library path using the "ANSIBLE_LIBRARY" environment variable.
+
+ 6) Vault Password File:-
+
+   *)  The default location for the Ansible Vault password file is "~/.ansible_vault" in the user's home directory.
+   *) You can set the "vault_password_file" option in your "ansible.cfg" to specify a different file.
+
+ 7) Cache Directory:-
+
+   *) Ansible uses a cache directory for facts and other temporary data. The default location is usually
+    "~/.ansible/tmp/."
+  *) You can specify an alternative cache directory using the "local_tmp" and "remote_tmp" options in
+    your "ansible.cfg."
+
+ 8) Enabling Networking logging and  read the logfile:-
+
+    *) it is disabled by default. It can be enabled with the "ANSIBLE_LOG_PATH" and "ANSIBLE_DEBUG" options on the 
+       ansible-controller, that is the machine running ansible-playbook.
+    *)  Before running ansible-playbook, run the following commands to enable logging:-
+          # Specify the location for the log file
+             $ export ANSIBLE_LOG_PATH=~/ansible.log
+          # Enable Debug
+             $ export ANSIBLE_DEBUG=True
+          # Run with 4*v for connection level verbosity
+             $ ansible-playbook -vvvv ...
+    *) After Ansible has finished running you can inspect the log file which has been created on the 
+       "ansible-controller":
+             less $ANSIBLE_LOG_PATH
+
+ 9) Enabling Networking device interaction logging:-
+
+   *) The messages are logged in the file pointed to by the "log_path" configuration option in the Ansible configuration 
+      file (or) by setting the "ANSIBLE_LOG_PATH".
+   *) Before running ansible-playbook run the following commands to enable logging
+        # Specify the location for the log file
+         $ export ANSIBLE_LOG_PATH=~/ansible.log
+   *) Enable device interaction logging for a given task
+      - name: get version information
+        cisco.ios.ios_command:
+          commands:
+          - show version
+           vars:
+         ansible_persistent_log_messages: True
+   *) To make this a global setting, add the following to your "ansible.cfg file":
+        [persistent_connection]
+        log_messages = True
+
+
+
