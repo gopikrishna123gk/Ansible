@@ -189,13 +189,27 @@ my_roles/
 
 18) How can you disable cowsay?
 
-   If cowsay is installed then executing your playbooks within Ansible is very smooth.
+  *) If cowsay is installed then executing your playbooks within Ansible is very smooth.
+  *) Even if you think that you want to work in a professional cow free environment, then you
+     will have two options:
+       Uninstall cowsay
+       Setting up value for the environment variable, like below
+        $ Export ANSIBLE_NOCOWS=1
 
-Even if you think that you want to work in a professional cow free environment, then you will have two options:
+ 19)  How can you access a list of Ansible_Variables?
 
-Uninstall cowsay
-Setting up value for the environment variable, like below
-Export ANSIBLE_NOCOWS=1
+   *) By default, Ansible gathers facts under machines under management. Further, these facts are
+      accessed in Playbooks and in templates. One of the best ways to view a list of all the facts
+      that are available in a machine, then need to run the setup module in the ad-hoc way
+        $ Ansible- m setup hostname
+
+20) How can you see all the variables specific to my host?
+
+   *) To see all the host-specific variables, that include all facts and other resources are:
+        $ Ansible - m debug- a “var=hostvars[‘hostname’]” localhost
+    ex:-$ Ansibe - m debug- a "var=hostvars[dev]" localhost
+
+
 
 
 
