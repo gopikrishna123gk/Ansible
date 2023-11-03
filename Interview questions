@@ -209,6 +209,163 @@ my_roles/
         $ Ansible - m debug- a “var=hostvars[‘hostname’]” localhost
     ex:-$ Ansibe - m debug- a "var=hostvars[dev]" localhost
 
+ 21) You have an ansible playbook that configures a server with a specific package. You want to run
+     the playbook on a group of servers, but you want to skip the task that installs the package on
+     a specific server. How would you do this?
+
+    *) To skip a task for a specific host, you can use the --limit option and specify the hostname (or)
+       pattern to match the host you want to skip.
+          $ Ansible-playbook --limit '!server1' playbook.yml
+      ex:-$ Ansible-playbook --limit '!dev' dev_playbook.yml
+
+ 22) You have an ansible playbook that installs and configures a web server. You want to run the playbook, 
+     but you want to test the changes before making them. How would you do this?
+
+    *) To test the changes made by an ansible playbook without making any actual changes, you can use 
+       the "--check flag". This will perform a "dry run" of the playbook and report any changes that would
+       be made, but it will not actually make any changes on the target hosts.
+         $ Ansible-playbook --check playbook.yml
+     ex:-$ Ansible-playbook --check gk_playbook.yml
+
+  23) You have an ansible playbook that installs and configures a database server. You want to run the playbook,
+      but you want to make it so that any failures will be ignored, and the playbook will continue to run. How
+      would you do this?
+
+     *) To ignore failures and continue running the playbook, you can use the "--force-handlers flag". This will 
+        cause ansible to continue running the playbook even if a task fails, and it will run any handlers
+        (tasks that are triggered by other tasks) that were registered for the failed tasks.
+          $ Ansible-playbook --force-handlers playbook.yml
+      ex:-$ Ansible-playbook --force-handlers gk_playbook.yml
+
+  24) You have an ansible playbook that installs and configures a load balancer. You want to run the playbook, but
+      you want to make it so that any tasks that would change the target hosts will be skipped. How would you do this?
+
+     *) To skip tasks that would make changes to the target hosts, you can use the "--diff flag". This will perform a
+        "dry run" of the playbook and report any changes that would be made, but it will skip any tasks that would 
+         make actual changes on the target hosts.
+          $ Ansible-playbook --diff playbook.yml
+      ex:-$ Ansible-playbook --diff gk_playbook.yml
+
+ 25)  You have an ansible playbook that installs and configures a monitoring system. You want to run the playbook,
+      but you want to make it so that any tasks that are not idempotent (i.e., tasks that cannot be run multiple
+      times without causing harm) will be skipped. How would you do this?
+
+     *) To skip non-idempotent tasks, you can use the --skip-tags flag and specify the tag or tags for the tasks
+        you want to skip.
+          $ Ansible-playbook --skip-tags non_idempotent playbook.yml
+      ex:-$ Ansible-playbook --skip-tags non_idempotent gk_playbook.yml
+
+ 26) You have an ansible playbook that installs and configures a file server. You want to run the playbook, but you
+     want to make it so that any tasks that are not relevant to the target hosts will be skipped. How would you do this?
+
+     *) To skip tasks that are not relevant to the target hosts, you can use the "--skip-tags flag" and specify the 
+        tag (or) tags for the tasks you want to skip.
+          $ Ansible-playbook --skip-tags '!file_server' playbook.yml
+      ex:-$ Ansible-playbook --skip-tags  'dev_server' gk_playbook.yml
+
+ 27) You want to run a shell command on all of the servers in your inventory. How would you do this using ansible?
+
+      *) You can use the command module to run a shell command on all of the servers in your inventory.
+        - name: Run shell command
+          hosts: all
+          tasks:
+          - name: Run command
+            command: echo hello
+
+ 28) You want to copy a file from your local machine to all of the servers in your inventory. How would you do this
+     using ansible?
+
+    *) You can use the copy module to copy a file from your local machine to all of the servers in your inventory.
+
+- name: Copy file
+  hosts: all
+  tasks:
+    - name: Copy file
+      copy:
+        src: /path/to/local/file
+        dest: /path/on/dev/server
+
+ 29) You want to install a package on all of the servers in your inventory using the package manager for the target 
+     operating system. How would you do this using ansible?
+
+   *) You can use the package module to install a package on all of the servers in your inventory using the package
+      manager for the target operating system.
+
+- name: Install package
+  hosts: all
+  tasks:
+    - name: Install package
+      package:
+        name: nginx
+
+ 30) You want to create a user on all of the servers in your inventory. How would you do this using ansible?
+
+    *) You can use the user module to create a user on all of the servers in your inventory.
+
+- name: Create user
+  hosts: all
+  tasks:
+    - name: Create user
+      user:
+        name: gk
+        password: $6$rounds=656000$somesalt$encryptedpassword
+
+ 31) reusability in ansible?
+
+   *) Ansible playbook files can be reused in multiple ways. Imports and Include are helpful to create/break up 
+      multiple small files of a massive playbook. Roles are primarily used to manage various tasks in a package 
+      including handlers, variables, plug-in and other modules. They can also be uploaded and shared by Ansible Galaxy.
+      Ansible Tower automatically fetches the roles that playbook needs from Galaxy, GitHub, or your local source control.
+
+ 32) Modules in Ansible?
+
+  *) Ansible works by connecting to the remote nodes over SSH and pushing out small programs, called 'modules' to them.
+    These programs are written to be resource models of the desired state of the system. Ansible then executes these 
+    modules and removes them when finished. 
+ *) Ansible ships with a number of readymade modules (called the 'module library') that can be executed directly on 
+    remote hosts or through Playbooks. Users can also write their own modules. These modules can control system resources,
+    like services, packages, (or) files, (or) handle executing system commands.
+
+33) Facts in ansible?
+
+  *) Whenever we run an Ansible playbook, Ansible first gathers information ('facts' an exhaustive list of all the 
+     environment details) about each host in the play.
+  *) it can be extremely helpful when we’re running playbooks; we can use gathered information like host IP addresses, 
+     CPU type, disk space, operating system information, and network interface information to change when certain tasks
+     are run or to change certain information used in configuration files.
+
+ 34) Handler in Ansible?
+
+   *) Handlers are just like regular tasks in a playbook, but they will only be run if a task notifies the handler. If a
+      task that would’ve notified the handlers is skipped due to a when condition (or) something of the like, the handler
+      will not be run.
+   *) Handlers are automatically loaded from roles/<role_name>/handlers/main.yaml.
+   *) Handlers will run once, and only once, after all of the tasks complete in a particular play.
+
+ 35) Task in Ansible?
+
+  *) At a basic level, a task is a way to call an Ansible module. In playbook goal of a play is to map a group of hosts
+     to some well-defined roles, represented by things Ansible calls tasks. 
+ *)  The task file is the main part of a role. If roles/<role_name>/tasks/main.yaml exists, all the tasks therein and 
+     any other files it includes will be embedded in the play and executed. 
+
+ 36) Variables in Ansible?
+
+   *) There are two 2 types of variables that can be defined in a role
+     1) Role variables:- loaded from roles/<role_name>/vars/main.yaml 
+     2) Role defaults:- which are loaded from roles/<role_name>/defaults/main.yaml 
+      *) The difference between 'variables' and 'defaults' is the precedence order.
+      *)  Role defaults are the lowest order variables. Any other definition of a variable will take precedence over a
+          role default.
+
+ 37) Meant by Tags in Ansible?
+
+   *)  If we have a large playbook, it may become useful to be able to run only a specific part of it rather than running 
+       everything in the whole Ansible playbook, Ansible supports a "tags:" attribute for this. 
+   *)  When we execute a playbook, we can filter tasks based on 'tags' in two ways: 
+   *)  On the command line, with the "--tags" (or) "--skip-tags" options 
+   *) In Ansible configuration settings, with the "TAGS_RUN" and "TAGS_SKIP" options.
+
 
 
 
