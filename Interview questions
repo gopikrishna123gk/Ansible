@@ -187,6 +187,16 @@ my_roles/
  *) run the playbook
    $ ansible-playbook -i inventory.ini copy_files.yml
 
+18) How can you disable cowsay?
+
+   If cowsay is installed then executing your playbooks within Ansible is very smooth.
+
+Even if you think that you want to work in a professional cow free environment, then you will have two options:
+
+Uninstall cowsay
+Setting up value for the environment variable, like below
+Export ANSIBLE_NOCOWS=1
+
 
 
 
