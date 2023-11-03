@@ -1,4 +1,4 @@
-Assuming we have 3 remote nodes and 1 controller in this setup
+1) Assuming we have 3 remote nodes and 1 controller in this setup
 
 *) creating Same users across all remote and contoller node
     $ sudo adduser [gk1]
@@ -53,6 +53,33 @@ Assuming we have 3 remote nodes and 1 controller in this setup
     $ ansible all -m ping
         [or]
    $ ansible all -m ping -u root
+
+2) to change default forks in ansible
+
+  *) To change the default number of forks in Ansible, you can do so by modifying the "forks" configuration
+     option in your Ansible configuration file (ansible.cfg). The forks option determines the maximum number
+     of parallel tasks that Ansible will execute on target hosts. You can adjust this value according to the 
+     capabilities of your control node and the performance of your target hosts.
+  *) Here's how to change the default number of forks in Ansible
+  *) Open or create the "ansible.cfg" file. You can typically find it in one of the following locations 
+       ./ansible.cfg (local directory)
+      ~/.ansible.cfg (user's home directory)
+      /etc/ansible/ansible.cfg (system-wide)
+ *) Add (or) modify the forks option in the [defaults] section of the ansible.cfg file. For example, to set 
+    the number of forks to 10:
+       forks = 10
+   Save the changes to the "ansible.cfg" file.
+ *) Now, Ansible will use the specified number of forks as the default for parallel task execution. Keep in mind that
+    the actual number of forks should be chosen based on the capabilities of your control node, the performance of your 
+    target hosts, and any system resource constraints. Setting the number too high may overload your control node or the 
+    target hosts, while setting it too low may result in slower execution of playbooks.
+ *) You can also override the forks value on a per-playbook basis by using the "--forks" command-line option. 
+      ex:-  $ ansible-playbook --forks 10 your-playbook.yml
+ *) This allows you to adjust the number of forks for specific playbooks without changing the global default.
+
+
+
+
 
 
 
