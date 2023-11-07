@@ -78,6 +78,27 @@
  *) This allows you to adjust the number of forks for specific playbooks without changing the global default.
 
 
+3) Creating custom Inventory files:-
+
+   *) Upon installation, Ansible creates an inventory file that is typically located at "/etc/ansible/hosts"
+   *)  access your home folder and create a new directory to hold your Ansible files
+        $ cd ~
+        $ mkdir ansible
+   *) Move to that directory and open a new inventory file using your text editor of choice. use nano:
+        $ cd ansible
+        $ nano inventory 
+   *) A list of your nodes, with one server per line, is enough for setting up a functional inventory file.
+      Hostnames and IP addresses are interchangeable.
+           203.0.113.111
+           203.0.113.112
+           203.0.113.113
+            non_prod
+  *)  you can use the "ansible-inventory" command to validate and obtain information about your Ansible inventory:
+       $ ansible-inventory -i inventory --list
+  *) To run Ansible commands with a custom inventory file, use the -i Flag
+       $ ansible all -i inventory -m ping
+  *) for playbook
+       $ ansible-playbook -i inventory playbook.yml
 
 
 
