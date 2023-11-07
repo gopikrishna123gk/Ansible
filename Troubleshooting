@@ -22,8 +22,8 @@
 
     Problem:- A specific Ansible module is failing.
     Example:- The apt module reports an error while trying to install a package on a Debian-based system.
-    Troubleshooting:- Review the module's documentation, check input parameters, and inspect the error message for details. It may
-                     indicate the package name is incorrect.
+    Troubleshooting:- Review the module's documentation, check input parameters, and inspect the error message for details.
+                      it may  indicate the package name is incorrect.
 
  5) Variable Mismatch:-
 
@@ -42,27 +42,29 @@
 
     Problem:- Hosts are not being recognized in the inventory.
     Example:- Ansible doesn't detect hosts from your inventory file.
-    Troubleshooting:- Double-check the inventory file for correct formatting, and make sure it's in the right location. Verify that 
-                      hostnames (or) IP addresses are correctly defined.
+    Troubleshooting:- Double-check the inventory file for correct formatting, and make sure it's in the right location. 
+                     Verify that  hostnames (or) IP addresses are correctly defined.
 
  8) Performance Slowdown:-
 
     Problem:- Playbooks are running slowly.
     Example:- Your playbook takes a long time to execute.
-    Troubleshooting:- Analyze the playbook for inefficiencies, consider limiting the use of "gather_facts", and use Ansible's parallelism 
-                      options, like --forks, to speed up execution.
+    Troubleshooting:- Analyze the playbook for inefficiencies, consider limiting the use of "gather_facts", and use Ansible's
+                     parallelism   options, like --forks, to speed up execution.
 
  9) Module Not Found:-
 
     Problem:- Ansible can't find a specific module.
     Example:- You get an error indicating that a module is missing.
-    Troubleshooting:- Ensure that the module is installed on the target host, or check your "ansible.cfg" for the correct module paths.
+    Troubleshooting:- Ensure that the module is installed on the target host, (or) check your "ansible.cfg" for the correct 
+                     module paths.
 
  10) Task Ordering Issue:-
 
      Problem: Playbook tasks are running in the wrong order.
      Example: Tasks execute in an unexpected sequence.
-     Troubleshooting: Review your playbook and ensure that tasks are correctly ordered. Use dependencies and notify to define task dependencies.
+     Troubleshooting: Review your playbook and ensure that tasks are correctly ordered. Use dependencies and notify to define
+                       task dependencies.
 
 11) trying to install a services using ansible playbook but not connecting to remote hosts
 
@@ -72,32 +74,32 @@
              [web_servers]
           web1 ansible_host=192.168.1.100
           web2 ansible_host=192.168.1.101
-    If you run an Ansible playbook but it's not connecting to your remote hosts, ensure that the inventory file is accessible and properly
-    specified using the -i option:
+    If you run an Ansible playbook but it's not connecting to your remote hosts, ensure that the inventory file is accessible
+    and properly specified using the -i option:
      $ ansible-playbook -i dev.ini gk-playbook.yml
 
  *)  SSH Key Authentication Issue:-
 
-   *)  If you are using SSH key authentication, make sure your SSH key is added to the SSH agent. If your "SSH key is id_rsa", use the
-       following command to add it
+   *)  If you are using SSH key authentication, make sure your SSH key is added to the SSH agent. If your "SSH key is id_rsa", 
+       use the  following command to add it
         $ ssh-add ~/.ssh/id_rsa
 
 *)  Host Key Verification Issue:-
 
-   *) If the remote host's SSH key fingerprint has changed, you'll need to update your known hosts. Use the following command to remove
-      the old entry and re-verify the host:
+   *) If the remote host's SSH key fingerprint has changed, you'll need to update your known hosts. Use the following command 
+      to remove the old entry and re-verify the host:
        $ ssh-keygen -R 192.168.1.100
 
 *)  Firewall and Security Issue:-
 
-  *) If you suspect a firewall issue, you may need to open the SSH port (default is 22) on your remote hosts. On Linux, you can use
-    ufw to open the port:
+  *) If you suspect a firewall issue, you may need to open the SSH port (default is 22) on your remote hosts. On Linux, you can 
+     use  ufw to open the port:
       $ sudo ufw allow 22
 
 *)  SSH Configuration Issue:-
 
-   *) Check your SSH client configuration in your "~/.ssh/config file". Make sure there are no conflicting settings that might affect 
-      Ansible's SSH connections.
+   *) Check your SSH client configuration in your "~/.ssh/config file". Make sure there are no conflicting settings that might  
+      effect Ansible's SSH connections.
 
  *)  Debugging Issue:-
 
@@ -115,6 +117,244 @@
 
  *)  SELinux (or) AppArmor Issue:-
 
-      On Linux, SELinux or AppArmor can sometimes interfere with SSH (or) Ansible. Check and adjust the security policies as needed.
+      On Linux, SELinux or AppArmor can sometimes interfere with SSH (or) Ansible. Check and adjust the security policies as
+      needed.
+
+12) Error Logs:-
+
+   Tower server errors are logged in "/var/log/tower". Supervisors logs can be found in "/var/log/supervisor/." Apache web 
+   server errors are logged in the httpd error log. Configure other Tower logging needs in "/etc/tower/conf.d/."
+
+13)  Problems connecting to your host:-
+
+    *) SSH Connection Issues:-
+
+       Problem:- Ansible is unable to establish an SSH connection to the remote host.
+       Solution:- Check the SSH configuration and connectivity.
+                  Ensure that the remote host is accessible via SSH from your Ansible control machine.
+                  Verify that SSH keys are correctly configured.
+                  Use the ping module to test the SSH connection:
+
+   *) Host Unreachable:-
+
+      Problem:- Ansible reports that the host is unreachable.
+      Solution:- Verify host connectivity and SSH settings.
+                 Ensure that the host is reachable from your control machine and there are no firewall rules blocking
+                 the connection.
+                 Check the host's IP address or hostname in your Ansible inventory file.
+
+  *)  SSH Key Authentication Issues:-
+
+      Problem:- Ansible is failing to authenticate using SSH keys.
+      Solution:- Check SSH key setup and permissions.
+                 Verify that your SSH key is located in the correct directory on the control machine.
+                 Ensure that the key file has the correct permissions (e.g., 600).
+                 Use the $ ssh-add command to add your key to the SSH agent.
+
+  *) assword Authentication Issues:-
+
+      Problem:- Ansible is unable to authenticate using a password.
+      Solution:- Verify password and SSH settings.
+                Double-check the password in your Ansible playbook (or) inventory file.
+                Make sure that password authentication is enabled on the remote host in SSHd configuration 
+                (sshd_config).
+
+  *)  Inventory Configuration Problems:-
+
+       Problem:- Ansible cannot find or parse your inventory.
+       Solution:- Check the inventory configuration.
+                  Ensure your inventory file (e.g., hosts file) is correctly formatted and contains the target host.
+                  Verify the path to your inventory file in the Ansible command (or) configuration.
+
+  *)  Hostname Resolution:-
+
+       Problem:- Hostname resolution fails.
+       Solution:- Ensure DNS and hostname resolution are working.
+                  Check that the hostname (or) IP address in your inventory file is correct.
+                  Verify DNS resolution by using the ping command from your control machine to the target host.
+
+  *) Privilege Escalation Issues:-
+
+     Problem:- Ansible tasks require privilege escalation, and it's not configured correctly.
+     Solution:- Set up privilege escalation correctly.
+                Use the become and become_method options in your playbook to configure privilege escalation.
+                Ensure the remote user has the necessary "sudo" (or) "su permissions".
+                Let's take an example using an Ansible playbook that connects to a remote host and installs a package.
+
+14) Problems running a playbook:-
+
+    *) Incorrect Playbook (or) Inventory Paths:-
+
+        Problem:- Ansible can't find the playbook (or) inventory file.
+        Solution:- Verify the paths are correct.
+                   Make sure your playbook file (gk_playbook.yml) and inventory file (prod_inventory.ini) are in
+                   the specified location.
+                   Use the "-i" option to specify the inventory file's location.
+                     $ ansible-playbook -i /path/to/prod_inventory.ini /path/to/gk_playbook.yml
+
+     *)  Syntax Errors in Playbook:-
+
+        Problem:- Ansible reports syntax errors in your playbook.
+        Solution:- Check your playbook for syntax errors.
+                   Use ansible-playbook with the "--syntax-check" option to validate your playbook's syntax.
+                      $ ansible-playbook --syntax-check gk_playbook.yml
+
+     *)  Missing Roles (or) Dependencies:-
+
+         Problem:- Your playbook uses roles or dependencies that are not installed.
+         Solution:- Ensure roles and dependencies are installed.
+                    Use ansible-galaxy to install roles. For example
+                      $ ansible-galaxy install gk_role_name
+
+    *) Permission Issues:-
+
+        Problem:- Ansible fails due to permission issues.
+        Solution:- Verify permissions.
+                   Ensure that the user running Ansible has the necessary permissions to access and modify files on the
+                   target system.
+
+     *) Host Unreachable:-
+
+        Problem:- Ansible reports that the host is unreachable.
+        Solution:- Verify host connectivity and SSH settings.
+                   Ensure that the host is reachable from your control machine and there are no firewall rules blocking
+                   the connection.
+                   Check the host's IP address (or) hostname in your Ansible inventory file.
+
+    *) Misconfigured Variables (or) Parameters:-
+
+       Problem:- Errors related to variables or playbook parameters.
+       Solution:- Check variable names and parameter values.
+                  Verify that variable names and parameters in your playbook are correctly spelled and defined.
+                  Use the debug module to print variable values during playbook execution for debugging.
+
+    *) Ansible Configuration Issues:-
+
+       Problem:- Ansible uses the wrong configuration settings.
+       Solution:- Check Ansible configuration.
+                  Confirm that your Ansible configuration files "(ansible.cfg)" are correctly set, and the specified
+                  values are appropriate for your environment.
+
+    *) Network (or) DNS Issues:-
+
+       Problem:- Network or DNS problems prevent Ansible from connecting to the target hosts.
+       Solution:- Diagnose and resolve network issues.
+                  Verify that your control machine can reach the target hosts through DNS or IP.
+                  Check your network configuration, firewalls, and DNS settings.
+
+15) Problems when running a job:-
+
+    *) Incorrect Command Syntax:-
+
+        Problem:- You are using incorrect syntax when running Ansible commands.
+        Solution:- Verify the syntax of your command.
+                  For example, to run a simple ansible command to execute a shell command on a target host,
+                  use the following syntax
+                    $ ansible -i inventory.ini -m shell -a "uptime" non_prod
+
+    *)  Authentication and SSH Connection Issues:-
+
+       Problem:- Ansible is unable to connect to the target host due to SSH (or) authentication issues.
+       Solution:- Check SSH settings and authentication.
+                  Verify that SSH keys (or) passwords are correctly configured.
+                  Ensure that the target host is reachable via SSH.
+                  For example, to test SSH connectivity with ansible, you can use the ping module
+                   $ ansible -i inventory.ini -m ping non_prod
+
+   *)  Host Unreachable:-
+
+      Problem:- Ansible reports that the host is unreachable.
+      Solution:- Verify host connectivity and SSH settings.
+                 Check if the target host is accessible from your control machine and that no firewall rules are 
+                 blocking the connection.
+                 Confirm the hostname or IP address in your inventory.
+
+   *)  Incorrect Inventory Configuration:-
+
+       Problem:- Ansible cannot find the target host in the inventory.
+       Solution:- Verify your inventory.
+                  Check your inventory file "(inventory.ini)" for correct formatting and the presence of the target host.
+                  Use the -i option to specify the inventory file
+                    $ ansible -i /path/to/inventory.ini -m command -a "uptime" non_prod
+
+   *) Privilege Escalation Issues:-
+
+       Problem:- Privilege escalation is needed for certain tasks, and it's not configured correctly.
+       Solution:- Set up privilege escalation correctly.
+                  Use the "--become" and "--become-method" options in your command to configure privilege escalation.
+                  Ensure the remote user has the necessary "sudo" (or) "su" permissions.
+                  For example, to run a command with privilege escalation:
+                    $ ansible -i inventory.ini -m shell -a "command" non_prod --become --become-method=sudo
+
+   *) Inventory Hostname Resolution:-
+
+       Problem:- Hostname resolution fails.
+       Solution:- Ensure DNS and hostname resolution are working.
+                  Verify that the hostname (or) IP address in your inventory is correct.
+                  Test DNS resolution using the ping command from your control machine to the target host.
+
+    *) Parameter Mismatch:-
+
+       Problem:- Errors related to module parameters.
+       Solution:- Check parameter names and values.
+                  Verify that the parameter names and values in your command match the documentation for the module
+                  you're using.
+                for ex, when using the "apt module" to install a package:
+                 $ ansible -i inventory.ini -m apt -a "name=nginx_package state=present" non_prod
+
+   *) Ansible Configuration Issues:-
+
+       Problem:- Ansible uses the wrong configuration settings.
+       Solution:- Check your Ansible configuration.
+                  Confirm that your Ansible configuration files "(ansible.cfg)" are correctly set and that the specified
+                  values are suitable for your environment.
+                  basic example of running an ansible command to execute a shell command on a remote host
+                    $ ansible -i inventory.ini -m shell -a "uptime" non_prod
 
 
+16) Playbook Stays in Pending:-
+
+     When an Ansible playbook or job remains in a "Pending" state, it typically means Ansible is having difficulty 
+     establishing a connection to the target hosts.
+
+      *) SSH Connection Issues:-
+
+          Problem:- Ansible cannot establish an SSH connection to the remote hosts.
+          Solution:- Verify SSH configuration and connectivity.
+                     Ensure your Ansible control machine can reach the remote hosts over SSH. 
+
+      *)  Incorrect Hostnames (or) IPs in Inventory:-
+
+          Problem:- The inventory file contains incorrect hostnames or IP addresses.
+          Solution:- Verify the hostnames (or) IPs in your inventory file.
+                     Check that the target hostnames (or) IP addresses are correctly listed in your Ansible 
+                     inventory file.
+
+      *)  SSH Key Authentication Issues:-
+
+         Problem:- Ansible is failing to authenticate using SSH keys.
+         Solution:- Check SSH key setup and permissions.
+                    Make sure your SSH keys are correctly set up and located in the expected directory on your
+                    control machine.
+                    Ensure that the key file has the correct permissions (e.g., 600).
+
+     *) Host Unreachable:-
+
+       Problem:- Ansible reports that the hosts are unreachable.
+       Solution:- Ensure host connectivity and SSH settings.
+                  Confirm that the target hosts are accessible via SSH from your control machine.
+                  Check if firewall rules are blocking the connection to the target hosts.
+
+    *) Privilege Escalation Issues:-
+
+       Problem:- Privilege escalation is needed but not configured correctly.
+       Solution:- Set up privilege escalation correctly.
+                  Use the "become" and "become_method" options in your playbook to configure privilege escalation.
+                  Ensure that the remote user has the necessary "sudo" (or) "su" permissions.
+
+    *) Ansible Configuration Issues:-
+
+        Problem:- Ansible uses the wrong configuration settings.
+        Solution:- Check Ansible configuration.
+                   Confirm that your Ansible configuration files (ansible.cfg) are correctly set and the specified 
+                   values are suitable for your environment.
